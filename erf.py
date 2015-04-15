@@ -8,13 +8,16 @@ class Erf:
         self.derivative = lambda x: 2 / math.sqrt(math.pi) * math.exp(-x**2)
 
     def taylor(self, x, eps=1e-6):
-        if type(x) is list:
-            erf = []
-            for i in range(0, len(x)):
-                erf.append(self.calc_series(x[i], eps))
-            return erf
-        else:
-            return self.calc_series(x, eps)
+        a = x
+        erf = x
+        q = self.quotient(x, 0)
+        n = 0
+        while abs(a) > eps:
+            a *= q
+            erf += a
+            n += 1
+            q = self.quotient(x, n)
+        return (2 / math.sqrt(math.pi)) * erf
 
     def lagrange(self, nodes, values, x):
         Ln = 0
@@ -66,18 +69,6 @@ class Erf:
 
     def quotient(self, x, n):
         return (-x * x * (2 * n + 1)) / ((n + 1) * (2 * n + 3))
-
-    def calc_series(self, x, eps):
-        a = x
-        erf = x
-        q = self.quotient(x, 0)
-        n = 0
-        while abs(a) > eps:
-            a *= q
-            erf += a
-            n += 1
-            q = self.quotient(x, n)
-        return (2 / math.sqrt(math.pi)) * erf
 
 if __name__ == '__main__':
     main()
