@@ -1,8 +1,12 @@
 import math
 from array import array
+from integral import integral
 
 
 class Erf:
+    def __init__(self):
+        self.derivative = lambda x: 2 / math.sqrt(math.pi) * math.exp(-x**2)
+
     def taylor(self, x, eps=1e-6):
         if type(x) is list:
             erf = []
@@ -10,7 +14,7 @@ class Erf:
                 erf.append(self.calc_series(x[i], eps))
             return erf
         else:
-            self.calc_series(x, eps)
+            return self.calc_series(x, eps)
 
     def lagrange(self, nodes, values, x):
         Ln = 0
@@ -21,9 +25,6 @@ class Erf:
                     F *= (x - nodes[j]) / (nodes[i] - nodes[j])
             Ln += values[i] * F
         return Ln
-
-    def derivative(self, x):
-        return 2 / math.sqrt(math.pi) * math.exp(-x**2)
 
     def lagrange_for_derivative(self, nodes, values, x):
         Ln = 0
@@ -47,6 +48,19 @@ class Erf:
             xk_xi = 1
 
         return Ln
+
+    # methods: gauss, simpson, left_rectangle, center_rectangle, trapezoidal
+    def integral(self, x, method = 'left_rectangle', eps = 1e-4):
+        prev, current = integral(self.derivative, 0, x, 1, method), integral(self.derivative, 0, x, 2, method)
+        tmp = current
+        N = 2
+        while abs(prev - current) > eps:
+            N *= 2
+            current = integral(self.derivative, 0, x, N, method)
+            prev = tmp
+            tmp = current
+        return current
+
 
     # helper method for calc one node, after "overload" for scalar and list
 

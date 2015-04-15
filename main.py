@@ -9,10 +9,10 @@ def create_nodes(a, b, n):
 
 def main():
     f = erf.Erf()
-    nodes = create_nodes(0, 2, 10)
-    values = f.taylor(nodes)
-    print(f.lagrange_for_derivative(nodes, values, 0.25))
-    print(f.derivative(0.25))
+    # nodes = create_nodes(0, 2, 10)
+    # values = f.taylor(nodes)
+    print(f.integral(0.8, 'simpson'))
+    print(f.taylor(0.8))
 
 if __name__ == '__main__':
     main()
