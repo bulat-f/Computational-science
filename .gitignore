@@ -1,5 +1,13 @@
-/env/
-
+# vim
 *.swp
 ~*
+
+# python
+/env/
 __*__
+
+# LaTeX
+*.log
+*.gz
+*.aux
+*.pdf
