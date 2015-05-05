@@ -64,6 +64,18 @@ class Erf:
             tmp = current
         return current
 
+    def inverse(self, f, eps = 1e-6):
+        x_prev = 0.2
+        x_current = x_prev - (self.taylor(x_prev) - f) / self.derivative(x_prev)
+        x_next = 0
+        while abs(self.taylor(x_current) - f) > eps:
+            g_x_current = self.taylor(x_current) - f
+            g_derivative_x_current = self.derivative(x_current)
+            g_derivative_x_prev = self.derivative(x_prev)
+            x_next = x_current - g_x_current / g_derivative_x_current - 0.5 * (g_x_current ** 2 / g_derivative_x_current ** 3) * ((g_derivative_x_current - g_derivative_x_prev) / (x_current - x_prev))
+            x_prev = x_current
+            x_current = x_next
+        return x_current
 
     # helper method for calc one node, after "overload" for scalar and list
 
