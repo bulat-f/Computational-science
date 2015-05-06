@@ -30,18 +30,17 @@ def taylor(a, b, n):
     write_tab_line(values, 6, out)
     out.write('\\end{tabular}')
 
-def lagrange_max_error(a, b):
-    out = open('./tex/lagrange.tex', 'w')
+def max_error(a, b, approximate_func, true_fun, out):
     nodes_count = []
     chebyshev = []
     equidistant = []
     for i in range(8):
         nodes_count.append(8 + 2*i)
     for count in nodes_count:
-        chebyshev.append(compare.chebyshev_max_error(a, b, f.lagrange, f.taylor, count))
-        equidistant.append(compare.equidistant_max_error(a, b, f.lagrange, f.taylor, count))
-    out.write('Протабулируем $L_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + '], где $n =' + tex_siquence(nodes_count) + '$ и вычилим погрешность в равностоящих $2n$ узлах\\\\\n')
-    out.write('\\begin{tabular}{' + 'r|' + 'c'*len(nodes_count) + '}\n')
+        chebyshev.append(compare.chebyshev_max_error(a, b, approximate_func, true_fun, count))
+        equidistant.append(compare.equidistant_max_error(a, b, approximate_func, true_fun, count))
+    out.write(', где $n =' + tex_siquence(nodes_count) + '$ и вычилим максимальную погрешность в равностоящих $2n$ узлах\\\\\n')
+    out.write('\\begin{tabular}{' + '|r|' + 'c'*len(nodes_count) + '|}\n')
     out.write('\hline\n')
     out.write('Кол-во узлов&')
     write_tab_line(nodes_count, 0, out)
@@ -51,29 +50,7 @@ def lagrange_max_error(a, b):
     write_tab_line(equidistant, 8, out)
     out.write('Чеб. узлы&')
     write_tab_line(chebyshev, 8, out)
-    out.write('\\end{tabular}')
-
-def derivative_of_lagrange_max_error(a, b):
-    out = open('./tex/derivative_of_lagrange_max_error.tex', 'w')
-    nodes_count = []
-    chebyshev = []
-    equidistant = []
-    for i in range(8):
-        nodes_count.append(8 + 2*i)
-    for count in nodes_count:
-        chebyshev.append(compare.chebyshev_max_error(a, b, f.lagrange_for_derivative, f.derivative, count))
-        equidistant.append(compare.equidistant_max_error(a, b, f.lagrange_for_derivative, f.derivative, count))
-    out.write('Протабулируем $L’_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + '], где $n =' + tex_siquence(nodes_count) + '$ и вычилим погрешность в равностоящих $2n$ узлах\\\\\n')
-    out.write('\\begin{tabular}{' + 'r|' + 'c'*len(nodes_count) + '}\n')
     out.write('\hline\n')
-    out.write('Кол-во узлов&')
-    write_tab_line(nodes_count, 0, out)
-    out.write('\hline\n')
-
-    out.write('равн. узлы&')
-    write_tab_line(equidistant, 8, out)
-    out.write('Чеб. узлы&')
-    write_tab_line(chebyshev, 8, out)
     out.write('\\end{tabular}\n\n')
 
 def derivative_of_lagrange_errors(a, b, n, out):
@@ -91,10 +68,15 @@ def derivative_of_lagrange_errors(a, b, n, out):
     out.write('\hline\n')
     out.write('\\end{tabular}\\\\\n\n')
 
+def lagrange(a, b):
+    out = open('./tex/lagrange.tex', 'w')
+    out.write('Протабулируем $L_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + ']')
+    max_error(a, b, f.lagrange, f.taylor, out)
+
 def derivative(a, b):
     out = open('./tex/derivative_errors.tex', 'w')
     derivative_of_lagrange_errors(a, b, 8, out)
     derivative_of_lagrange_errors(a, b, 16, out)
-    derivative_of_lagrange_max_error(a, b)
-
-
+    out_for_max_error = open('./tex/derivative_of_lagrange_max_error.tex', 'w')
+    out_for_max_error.write('Протабулируем $L’_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + ']')
+    max_error(a, b, f.lagrange_for_derivative, f.derivative, out_for_max_error)
