@@ -2,9 +2,8 @@ import math
 
 def equidistant_nodes(a, b, n):
     nodes = []
-    n += 1 # include a and b
     h = (b - a) / n
-    for i in range(n):
+    for i in range(n+1):
         nodes.append(a + i * h)
     return nodes
 
