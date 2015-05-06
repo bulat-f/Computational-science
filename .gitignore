@@ -15,4 +15,5 @@ __*__
 # automatic genrating files
 /tex/taylor.tex
 /tex/lagrange.tex
-/tex/lagrange_for_derivative.tex
+/tex/derivative_of_lagrange_max_error.tex
+/tex/derivative_errors.tex

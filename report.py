@@ -2,8 +2,10 @@ import erf
 import compare
 import nodes
 
+f = erf.Erf()
+
 # helper methods
-def write_tabs(a, digits, out):
+def write_tab_line(a, digits, out):
     counter = 0
     rounding = '%.' + str(digits) + 'f'
     n = len(a)
@@ -18,20 +20,18 @@ def tex_siquence(arr):
 # formulagte report files
 def taylor(a, b, n):
     out = open('./tex/taylor.tex', 'w')
-    f = erf.Erf()
     out.write('Протабулируем $erf(x)$ на отрезке [' + str(a) + ', ' + str(b) + '] на ' + str(n) + ' узлах с точностью $10^{-6}$, основываясь на ряде Тейлора:\\\\\n')
     out.write('\\begin{tabular}{' + 'c'*(n+1) + '}\n')
     taylor_nodes = nodes.equidistant_nodes(a, b, n)
     values = nodes.method_for_array(taylor_nodes, f.taylor)
     out.write('\hline\n')
-    write_tabs(taylor_nodes, 2, out)
+    write_tab_line(taylor_nodes, 2, out)
     out.write('\hline\n')
-    write_tabs(values, 6, out)
+    write_tab_line(values, 6, out)
     out.write('\\end{tabular}')
 
-def lagrange(a, b):
+def lagrange_max_error(a, b):
     out = open('./tex/lagrange.tex', 'w')
-    f = erf.Erf()
     nodes_count = []
     chebyshev = []
     equidistant = []
@@ -44,18 +44,17 @@ def lagrange(a, b):
     out.write('\\begin{tabular}{' + 'r|' + 'c'*len(nodes_count) + '}\n')
     out.write('\hline\n')
     out.write('Кол-во узлов&')
-    write_tabs(nodes_count, 0, out)
+    write_tab_line(nodes_count, 0, out)
     out.write('\hline\n')
 
     out.write('равн. узлы&')
-    write_tabs(equidistant, 8, out)
+    write_tab_line(equidistant, 8, out)
     out.write('Чеб. узлы&')
-    write_tabs(chebyshev, 8, out)
+    write_tab_line(chebyshev, 8, out)
     out.write('\\end{tabular}')
 
-def lagrange_for_derivative(a, b):
-    out = open('./tex/lagrange_for_derivative.tex', 'w')
-    f = erf.Erf()
+def derivative_of_lagrange_max_error(a, b):
+    out = open('./tex/derivative_of_lagrange_max_error.tex', 'w')
     nodes_count = []
     chebyshev = []
     equidistant = []
@@ -68,11 +67,34 @@ def lagrange_for_derivative(a, b):
     out.write('\\begin{tabular}{' + 'r|' + 'c'*len(nodes_count) + '}\n')
     out.write('\hline\n')
     out.write('Кол-во узлов&')
-    write_tabs(nodes_count, 0, out)
+    write_tab_line(nodes_count, 0, out)
     out.write('\hline\n')
 
     out.write('равн. узлы&')
-    write_tabs(equidistant, 8, out)
+    write_tab_line(equidistant, 8, out)
     out.write('Чеб. узлы&')
-    write_tabs(chebyshev, 8, out)
-    out.write('\\end{tabular}')
+    write_tab_line(chebyshev, 8, out)
+    out.write('\\end{tabular}\n\n')
+
+def derivative_of_lagrange_errors(a, b, n, out):
+    points = nodes.equidistant_nodes(a, b, 2*n)
+    out.write('\\quad\n\\noindent Количество узлов интерполяции - ' + str(n) + '. Считаем в равноудаленных ' + str(2*n) + ' узлах.\\\\\n')
+    chebyshev = compare.chebyshev_errors(a, b, f.lagrange_for_derivative, f.derivative, n)
+    equidistant = compare.equidistant_errors(a, b, f.lagrange, f.taylor, n)
+    out.write('\\begin{tabular}{ccc}\n')
+    out.write('\hline\n')
+    out.write('$x$&Погрешность(Чеб. узлы)&Погрешность (ровн. узлы)\\\\\n')
+    out.write('\hline\n')
+    for i in range(2*n):
+        arr = [points[i], chebyshev[i], equidistant[i]]
+        write_tab_line(arr, 8, out)
+    out.write('\hline\n')
+    out.write('\\end{tabular}\\\\\n\n')
+
+def derivative(a, b):
+    out = open('./tex/derivative_errors.tex', 'w')
+    derivative_of_lagrange_errors(a, b, 8, out)
+    derivative_of_lagrange_errors(a, b, 16, out)
+    derivative_of_lagrange_max_error(a, b)
+
+
