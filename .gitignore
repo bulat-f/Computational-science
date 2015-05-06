@@ -11,3 +11,7 @@ __*__
 *.gz
 *.aux
 *.pdf
+
+# automatic genrating files
+/tex/taylor.tex
+/tex/lagrange.tex
