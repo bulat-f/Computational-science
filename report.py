@@ -52,3 +52,27 @@ def lagrange(a, b):
     out.write('Чеб. узлы&')
     write_tabs(chebyshev, 8, out)
     out.write('\\end{tabular}')
+
+def lagrange_for_derivative(a, b):
+    out = open('./tex/lagrange_for_derivative.tex', 'w')
+    f = erf.Erf()
+    nodes_count = []
+    chebyshev = []
+    equidistant = []
+    for i in range(8):
+        nodes_count.append(8 + 2*i)
+    for count in nodes_count:
+        chebyshev.append(compare.chebyshev_max_error(a, b, f.lagrange_for_derivative, f.derivative, count))
+        equidistant.append(compare.equidistant_max_error(a, b, f.lagrange_for_derivative, f.derivative, count))
+    out.write('Протабулируем $L’_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + '], где $n =' + tex_siquence(nodes_count) + '$ и вычилим погрешность в равностоящих $2n$ узлах\\\\\n')
+    out.write('\\begin{tabular}{' + 'r|' + 'c'*len(nodes_count) + '}\n')
+    out.write('\hline\n')
+    out.write('Кол-во узлов&')
+    write_tabs(nodes_count, 0, out)
+    out.write('\hline\n')
+
+    out.write('равн. узлы&')
+    write_tabs(equidistant, 8, out)
+    out.write('Чеб. узлы&')
+    write_tabs(chebyshev, 8, out)
+    out.write('\\end{tabular}')

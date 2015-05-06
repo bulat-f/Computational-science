@@ -15,3 +15,4 @@ __*__
 # automatic genrating files
 /tex/taylor.tex
 /tex/lagrange.tex
+/tex/lagrange_for_derivative.tex

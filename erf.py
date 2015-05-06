@@ -32,24 +32,20 @@ class Erf:
     def lagrange_for_derivative(self, nodes, values, x):
         Ln = 0
         n = len(nodes)
-        xk_xi = 1
+        p = 1
         lk = 0
 
-        x_xi = 1
-        for i in range(0, n):
-            x_xi *= x - nodes[i]
-
         for k in range(0, n):
-            for i in range(0, n):
-                if i != k:
-                    xk_xi *= nodes[k] - nodes[i]
             for j in range(0, n):
                 if j != k:
-                    lk += x_xi / ((x - nodes[k]) * (x - nodes[j]) * xk_xi)
+                    p = 1
+                    for i in range(0, n):
+                        if i != k and i != j:
+                            p *= (x - nodes[i]) / (nodes[k] - nodes[i])
+                    p /= nodes[k] - nodes[j]
+                    lk += p
             Ln += values[k] * lk
             lk = 0
-            xk_xi = 1
-
         return Ln
 
     # methods: gauss, simpson, left_rectangle, center_rectangle, trapezoidal

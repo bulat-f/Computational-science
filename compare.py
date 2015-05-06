@@ -1,8 +1,11 @@
 import nodes
+import erf
+
+f = erf.Erf()
 
 def chebyshev_errors(a, b, approximate_func, true_func, n):
     interpolation_nodes = nodes.chebyshev_nodes(a, b, n + 1)
-    interpolation_values = nodes.method_for_array(interpolation_nodes, true_func)
+    interpolation_values = nodes.method_for_array(interpolation_nodes, f.taylor)
     points = nodes.equidistant_nodes(a, b, n * 2)
     approximate = lambda x : approximate_func(interpolation_nodes, interpolation_values, x)
     approx_values = nodes.method_for_array(points, approximate)
@@ -14,7 +17,7 @@ def chebyshev_errors(a, b, approximate_func, true_func, n):
 
 def equidistant_errors(a, b, approximate_func, true_func, n):
     interpolation_nodes = nodes.equidistant_nodes(a, b, n)
-    interpolation_values = nodes.method_for_array(interpolation_nodes, true_func)
+    interpolation_values = nodes.method_for_array(interpolation_nodes, f.taylor)
     points = nodes.equidistant_nodes(a, b, n * 2)
     approximate = lambda x : approximate_func(interpolation_nodes, interpolation_values, x)
     approx_values = nodes.method_for_array(points, approximate)
