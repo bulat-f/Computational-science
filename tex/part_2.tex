@@ -1,0 +1,17 @@
+\section{Интерполяционный полином Лагранжа}
+
+Построим интерполяционный полином Лагранжа, приближающий $erf(x)$
+$$
+	L_n(x)=\sum\limits_{i=0}^{n}f(x_i)\prod\limits_{i \neq j, j = 0}^{n} \frac{x - x_j}{x_i-x_j}
+$$
+
+И вычислим погрешность интерполяции
+$$
+	\epsilon_n = \max\limits_{x \in (a, b)} \epsilon(x),
+$$
+где
+$$
+	\epsilon(x)	= \left| erf(x) - L_n(x)\right|.
+$$
+
+\input{lagrange}
