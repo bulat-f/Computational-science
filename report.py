@@ -69,9 +69,13 @@ def errors_in_points(a, b, approximate_func, true_fun, n, out):
     out.write('\\end{tabular}\\\\\n\n')
 
 def lagrange(a, b):
-    out = open('./tex/lagrange.tex', 'w')
-    out.write('Протабулируем $L_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + ']')
-    max_error(a, b, f.lagrange, f.taylor, out)
+    out_for_errors_in_points = open('./tex/lagrange_errors.tex', 'w')
+    out_for_max_error = open('./tex/lagrange_max_error.tex', 'w')
+    out_for_max_error.write('Протабулируем $L_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + ']')
+
+    errors_in_points(a, b, f.lagrange, f.taylor, 6, out_for_errors_in_points)
+    errors_in_points(a, b, f.lagrange, f.taylor, 12, out_for_errors_in_points)
+    max_error(a, b, f.lagrange, f.taylor, out_for_max_error)
 
 def derivative(a, b):
     out_for_errors_in_points = open('./tex/derivative_errors.tex', 'w')
