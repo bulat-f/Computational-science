@@ -53,12 +53,12 @@ def max_error(a, b, approximate_func, true_fun, out):
     out.write('\hline\n')
     out.write('\\end{tabular}\n\n')
 
-def derivative_of_lagrange_errors(a, b, n, out):
+def errors_in_points(a, b, approximate_func, true_fun, n, out):
     points = nodes.equidistant_nodes(a, b, 2*n)
     out.write('\\quad\n\\noindent Количество узлов интерполяции - ' + str(n) + '. Считаем в равноудаленных ' + str(2*n) + ' узлах.\\\\\n')
-    chebyshev = compare.chebyshev_errors(a, b, f.lagrange_for_derivative, f.derivative, n)
-    equidistant = compare.equidistant_errors(a, b, f.lagrange, f.taylor, n)
-    out.write('\\begin{tabular}{ccc}\n')
+    chebyshev = compare.chebyshev_errors(a, b, approximate_func, true_fun, n)
+    equidistant = compare.equidistant_errors(a, b, approximate_func, true_fun, n)
+    out.write('\\begin{tabular}{|ccc|}\n')
     out.write('\hline\n')
     out.write('$x$&Погрешность(Чеб. узлы)&Погрешность (ровн. узлы)\\\\\n')
     out.write('\hline\n')
@@ -74,9 +74,10 @@ def lagrange(a, b):
     max_error(a, b, f.lagrange, f.taylor, out)
 
 def derivative(a, b):
-    out = open('./tex/derivative_errors.tex', 'w')
-    derivative_of_lagrange_errors(a, b, 8, out)
-    derivative_of_lagrange_errors(a, b, 16, out)
+    out_for_errors_in_points = open('./tex/derivative_errors.tex', 'w')
     out_for_max_error = open('./tex/derivative_of_lagrange_max_error.tex', 'w')
     out_for_max_error.write('Протабулируем $L’_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + ']')
+
+    errors_in_points(a, b, f.lagrange_for_derivative, f.derivative, 8, out_for_errors_in_points)
+    errors_in_points(a, b, f.lagrange_for_derivative, f.derivative, 16, out_for_errors_in_points)
     max_error(a, b, f.lagrange_for_derivative, f.derivative, out_for_max_error)
