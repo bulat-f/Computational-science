@@ -1,6 +1,7 @@
 import erf
 import compare
 import nodes
+import matplotlib.pyplot as plt
 
 f = erf.Erf()
 
@@ -62,19 +63,24 @@ def errors_in_points(a, b, approximate_func, true_fun, n, out):
     out.write('\hline\n')
     out.write('$x$&Погрешность(Чеб. узлы)&Погрешность (ровн. узлы)\\\\\n')
     out.write('\hline\n')
-    for i in range(2*n):
+    for i in range(2*n + 1):
         arr = [points[i], chebyshev[i], equidistant[i]]
         write_tab_line(arr, 8, out)
     out.write('\hline\n')
     out.write('\\end{tabular}\\\\\n\n')
+    print(len(equidistant))
+    graphic_file_name = out.name.split('/')[2].split('.')[0] + str(len(points)) + '.png'
+    out.write('\\includegraphics{' + graphic_file_name + '}')
+    plt.plot(points, equidistant, 'r--', points, chebyshev, 'b-')
+    plt.savefig('./tex/' + graphic_file_name)
 
 def lagrange(a, b):
     out_for_errors_in_points = open('./tex/lagrange_errors.tex', 'w')
     out_for_max_error = open('./tex/lagrange_max_error.tex', 'w')
     out_for_max_error.write('Протабулируем $L_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + ']')
 
-    errors_in_points(a, b, f.lagrange, f.taylor, 6, out_for_errors_in_points)
-    errors_in_points(a, b, f.lagrange, f.taylor, 12, out_for_errors_in_points)
+    errors_in_points(a, b, f.lagrange, f.taylor, 5, out_for_errors_in_points)
+    errors_in_points(a, b, f.lagrange, f.taylor, 10, out_for_errors_in_points)
     max_error(a, b, f.lagrange, f.taylor, out_for_max_error)
 
 def derivative(a, b):
@@ -82,6 +88,6 @@ def derivative(a, b):
     out_for_max_error = open('./tex/derivative_of_lagrange_max_error.tex', 'w')
     out_for_max_error.write('Протабулируем $L’_n(x)$ на отрезке [' + str(a) + ', ' + str(b) + ']')
 
-    errors_in_points(a, b, f.lagrange_for_derivative, f.derivative, 8, out_for_errors_in_points)
-    errors_in_points(a, b, f.lagrange_for_derivative, f.derivative, 16, out_for_errors_in_points)
+    errors_in_points(a, b, f.lagrange_for_derivative, f.derivative, 5, out_for_errors_in_points)
+    errors_in_points(a, b, f.lagrange_for_derivative, f.derivative, 10, out_for_errors_in_points)
     max_error(a, b, f.lagrange_for_derivative, f.derivative, out_for_max_error)

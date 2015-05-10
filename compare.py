@@ -11,7 +11,7 @@ def chebyshev_errors(a, b, approximate_func, true_func, n):
     approx_values = nodes.method_for_array(points, approximate)
     true_values = nodes.method_for_array(points, true_func)
     approx_error = []
-    for i in range(2 * n):
+    for i in range(2 * n + 1):
         approx_error.append(abs(approx_values[i] - true_values[i]))
     return approx_error
 
@@ -23,7 +23,7 @@ def equidistant_errors(a, b, approximate_func, true_func, n):
     approx_values = nodes.method_for_array(points, approximate)
     true_values = nodes.method_for_array(points, true_func)
     approx_error = []
-    for i in range(2 * n):
+    for i in range(2 * n + 1):
         approx_error.append(abs(approx_values[i] - true_values[i]))
     return approx_error
 
