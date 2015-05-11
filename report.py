@@ -74,6 +74,25 @@ def errors_in_points(a, b, approximate_func, true_fun, n, out):
     plt.plot(points, equidistant, 'r--', points, chebyshev, 'b-')
     plt.savefig('./tex/' + graphic_file_name)
 
+def integral_iterations(n, out):
+    eps_arr = []
+    iterations = []
+    out.write('\\begin{tabular}{|l|' + 'c'*n + '|}\n')
+    out.write('\hline\n')
+    out.write('Точность&')
+    for i in range(n):
+        eps_arr.append(1e-2 * 1e-1**i)
+    write_tab_line(eps_arr, n+1, out)
+    out.write('\hline\n')
+    for method in ['left_rectangle', 'center_rectangle', 'trapezoidal', 'simpson', 'gauss']:
+        iterations.clear()
+        for i in range(n):
+            iterations.append(f.integral(2, method, eps_arr[i]))
+        out.write(' '.join(method.split('_')) + '&')
+        write_tab_line(iterations, 0, out)
+    out.write('\hline\n')
+    out.write('\\end{tabular}\\\\\n\n')
+
 def lagrange(a, b):
     out_for_errors_in_points = open('./tex/lagrange_errors.tex', 'w')
     out_for_max_error = open('./tex/lagrange_max_error.tex', 'w')
@@ -91,3 +110,7 @@ def derivative(a, b):
     errors_in_points(a, b, f.lagrange_for_derivative, f.derivative, 5, out_for_errors_in_points)
     errors_in_points(a, b, f.lagrange_for_derivative, f.derivative, 10, out_for_errors_in_points)
     max_error(a, b, f.lagrange_for_derivative, f.derivative, out_for_max_error)
+
+def integral(a, b):
+    out = open('./tex/integral.tex', 'w')
+    integral_iterations(5, out)

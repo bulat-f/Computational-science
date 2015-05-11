@@ -6,6 +6,7 @@ def main():
     report.taylor(0, 2, 10)
     report.lagrange(0, 2)
     report.derivative(0, 2)
+    report.integral(0, 2)
 
 
 if __name__ == '__main__':

@@ -58,7 +58,7 @@ class Erf:
             current = integral(self.derivative, 0, x, N, method)
             prev = tmp
             tmp = current
-        return current
+        return N
 
     def inverse(self, f, eps = 1e-6):
         x_prev = 0.2
