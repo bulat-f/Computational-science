@@ -4,9 +4,28 @@
 	erf(x) = \frac{2}{\sqrt{\pi}}\sum^{\infty}_{n = 0}(-1)^n \frac{x^{2n+1}}{n!(2n+1)}
 \end{equation}
 \begin{theorem}
-	Ряд ~(\ref{taylor}) сходится.
+	Ряд ~(\ref{taylor}) сходится на всей числовой прямой.
 \end{theorem}
 \begin{proof}
-	Докажем это позже.
+	Докажем, что вычисление функции ошибок действительно возможно с использованием ряда. Как известно из курса математического анализа, ряд Тейлора для функции $e^x$ имеет вид:
+	$$
+		e^x = \sum\limits_{n=0}^{\infty} \frac{x^n}{n!}
+	$$
+	
+	Причем радиус сходимости этого ряда бесконечен. Подставляя в эту формулу $x = -t^2$
+	$$
+		e^{-t^2} = \sum\limits_{n=0}^{\infty} \frac{(-1)^nt^{2n}}{n!}
+	$$
+	и интегрируя по $t$ от $0$ до $x$,
+	$$
+		\int\limits_{0}^{x} e^{-t^2} dt= \sum\limits_{n=0}^{\infty} \frac{(-1)^n}{n!}\int\limits_{0}^{x} t^{2n} dt = \sum\limits_{n=0}^{\infty} \frac{(-1)^nx^{2n+1}}{n!(2n+1)}
+	$$
+	
+	Найдем радиус сходимости $R$ по формуле
+	$$
+		\frac{1}{R} = \lim\limits_{i \to \infty} \left| \frac{a_{i+1}}{a_i} \right|
+	$$
+	
+	Легко находится, что $R = +\infty$.
 \end{proof}
 \input{taylor}
