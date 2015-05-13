@@ -17,7 +17,7 @@ def center_rectangle(func, a, b):
     return func((a + b)/2) * (b - a)
 
 def gauss(func, a, b):
-    return 0.5 * (func((a + b)/2 - (b - a)/(2 * math.sqrt(3))) + func((a + b)/2 - (b - a)/(2 * math.sqrt(3)))) * (b - a)
+    return 0.5 * (func(a + (b - a)/2 * (1 - 1 / math.sqrt(3))) + func(a + (b - a)/2 * (1 + 1 / math.sqrt(3)))) * (b - a)
 
 def simpson(func, a, b):
     return (b - a) * (func(a) + 4 * func((a + b) / 2) + func(b)) / 6
