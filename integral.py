@@ -23,6 +23,5 @@ def simpson(func, a, b):
     return (b - a) * (func(a) + 4 * func((a + b) / 2) + func(b)) / 6
 
 def trapezoidal(func, a, b):
-    print('trapezoidal')
     return 0.5 * (func(a) + func(b)) * (b - a)
 

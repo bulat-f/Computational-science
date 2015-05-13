@@ -74,7 +74,6 @@ def errors_in_points(a, b, approximate_func, true_fun, n, out):
         write_tab_line(arr, 8, out)
     out.write('\hline\n')
     out.write('\\end{tabular}\\\\\n\n')
-    print(len(equidistant))
     graphic_file_name = out.name.split('/')[2].split('.')[0] + str(len(points)) + '.png'
     out.write('\\includegraphics{' + graphic_file_name + '}')
     plt.cla()
@@ -145,3 +144,20 @@ def inverse(a, b):
     plt.plot(points, true_erf, 'r--', points, inverse, 'b-')
     plt.savefig('./tex/' + graphic_file_name)
 
+def create():
+    print('Taylor...')
+    taylor(0, 2, 10)
+    print('Done')
+    print('Lagrange...')
+    lagrange(0, 2)
+    print('Done')
+    print('Derivative...')
+    derivative(0, 2)
+    print('Done')
+    print('Integral...')
+    integral(0, 2)
+    print('Done')
+    print('Inverse...')
+    inverse(0, 0.95)
+    print('Done\n==============')
+    print('All parts of report done. Please, run `ptflatex main.tex` for get report in pdf format.')
