@@ -29,7 +29,13 @@ def taylor(a, b, n):
     write_tab_line(taylor_nodes, 2, out)
     out.write('\hline\n')
     write_tab_line(values, 6, out)
-    out.write('\\end{tabular}')
+    out.write('\\end{tabular}\n\n')
+    graphic_file_name = 'taylor.png'
+    out.write('\\includegraphics{' + graphic_file_name + '}')
+    plt.cla()
+    plt.clf()
+    plt.plot(taylor_nodes, values, 'b-')
+    plt.savefig('./tex/' + graphic_file_name)
 
 def max_error(a, b, approximate_func, true_fun, out):
     nodes_count = []
@@ -71,6 +77,8 @@ def errors_in_points(a, b, approximate_func, true_fun, n, out):
     print(len(equidistant))
     graphic_file_name = out.name.split('/')[2].split('.')[0] + str(len(points)) + '.png'
     out.write('\\includegraphics{' + graphic_file_name + '}')
+    plt.cla()
+    plt.clf()
     plt.plot(points, equidistant, 'r--', points, chebyshev, 'b-')
     plt.savefig('./tex/' + graphic_file_name)
 
