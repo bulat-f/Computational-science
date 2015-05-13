@@ -7,6 +7,7 @@ def main():
     report.lagrange(0, 2)
     report.derivative(0, 2)
     report.integral(0, 2)
+    report.inverse(0, 0.95)
 
 
 if __name__ == '__main__':

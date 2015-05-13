@@ -122,3 +122,26 @@ def derivative(a, b):
 def integral(a, b):
     out = open('./tex/integral.tex', 'w')
     integral_iterations(5, out)
+
+def inverse(a, b):
+    n = 19
+    out = open('./tex/inverse.tex', 'w')
+    points = nodes.equidistant_nodes(a, b, n)
+    true_erf = nodes.method_for_array(points, f.taylor)
+    inverse = nodes.method_for_array(points, f.inverse)
+    out.write('\\begin{tabular}{|ccc|}\n')
+    out.write('\hline\n')
+    out.write('$x$&$erf(x)$&$erf^{-1}(x)$\\\\\n')
+    out.write('\hline\n')
+    for i in range(n + 1):
+        arr = [points[i], true_erf[i], inverse[i]]
+        write_tab_line(arr, 8, out)
+    out.write('\hline\n')
+    out.write('\\end{tabular}\\\\\n\n')
+    graphic_file_name = out.name.split('/')[2].split('.')[0] + '.png'
+    out.write('\\includegraphics{' + graphic_file_name + '}')
+    plt.cla()
+    plt.clf()
+    plt.plot(points, true_erf, 'r--', points, inverse, 'b-')
+    plt.savefig('./tex/' + graphic_file_name)
+
